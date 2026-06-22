@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08090d">
+  <meta name="description" content="Generate FiveM server commands as native, QBCore and ESX Lua â€” instantly. Live preview, syntax highlighting, copy and download.">
+  <title>FiveM Command Builder â€” Web Utility Suite</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="topbar container">
+    <a class="brand" href="https://github.com/kasapdev/web-utility-suite" aria-label="Back to Web Utility Suite">
+      <span class="logo">
+        <!-- terminal / command icon -->
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="4 7 9 12 4 17"></polyline>
+          <line x1="12" y1="17" x2="20" y2="17"></line>
+        </svg>
+      </span>
+      <span class="col" style="gap:0">
+        <span>FiveM Command Builder</span>
+        <span class="sub">Web Utility Suite</span>
+      </span>
+    </a>
+    <span class="spacer"></span>
+    <button class="btn btn--sm hide-sm" id="btn-example" title="Load a realistic example command">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"></path></svg>
+      Example
+    </button>
+    <button class="btn btn--sm hide-sm" id="btn-reset" title="Clear all fields">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+      Reset
+    </button>
+    <button class="btn btn--icon" data-shortcut-help id="btn-help" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"></path></svg>
+    </button>
+    <button class="btn btn--icon" data-theme-toggle title="Toggle theme" aria-label="Toggle theme">
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+  </header>
+
+  <main class="container">
+    <section class="hero fade-in">
+      <h1>Build FiveM commands, <span class="gradient-text">ship clean Lua</span>.</h1>
+      <p class="secondary">Define a server command once and export it as native <strong>RegisterCommand</strong>, <strong>QBCore</strong> or <strong>ESX</strong> â€” with permissions, arguments, chat suggestions and aliases handled for you.</p>
+    </section>
+
+    <div class="builder rise">
+      <!-- ===================== FORM ===================== -->
+      <form class="panel form-panel" id="cmd-form" autocomplete="off" novalidate>
+        <div class="panel-head">
+          <h2>Command definition</h2>
+          <span class="badge badge--info" id="form-badge">Live</span>
+        </div>
+
+        <!-- Name + permission -->
+        <div class="grid two">
+          <div class="field">
+            <label for="f-name">Command name</label>
+            <div class="input-prefix">
+              <span class="prefix">/</span>
+              <input type="text" id="f-name" placeholder="heal" aria-describedby="name-err" spellcheck="false">
+            </div>
+            <small class="err" id="name-err" role="alert" hidden></small>
+          </div>
+          <div class="field">
+            <label for="f-perm">Permission (ACE)</label>
+            <input type="text" id="f-perm" placeholder="group.admin" spellcheck="false">
+            <small class="muted">Leave empty for an open command. e.g. <code>group.admin</code> or <code>command.heal</code></small>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="field">
+          <label for="f-desc">Description / help text</label>
+          <input type="text" id="f-desc" placeholder="Restore a player's health" spellcheck="false">
+        </div>
+
+        <!-- Toggles -->
+        <div class="toggle-grid">
+          <label class="toggle-card check">
+            <span class="switch">
+              <input type="checkbox" id="f-restricted">
+              <span class="track"></span><span class="thumb"></span>
+            </span>
+            <span class="toggle-text">
+              <span class="toggle-title">Restricted</span>
+              <span class="toggle-sub">Require ACE permission to run</span>
+            </span>
+          </label>
+          <label class="toggle-card check">
+            <span class="switch">
+              <input type="checkbox" id="f-suggestion" checked>
+              <span class="track"></span><span class="thumb"></span>
+            </span>
+            <span class="toggle-text">
+              <span class="toggle-title">Chat suggestion</span>
+              <span class="toggle-sub">Emit chat:addSuggestion</span>
+            </span>
+          </label>
+        </div>
+
+        <!-- Arguments -->
+        <div class="section">
+          <div class="section-head">
+            <h3>Arguments</h3>
+            <button type="button" class="btn btn--sm" id="add-arg">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add argument
+            </button>
+          </div>
+          <div id="args-list" class="rows"></div>
+          <div class="rows-empty" id="args-empty">No arguments yet â€” this command takes none.</div>
+        </div>
+
+        <!-- Aliases -->
+        <div class="section">
+          <div class="section-head">
+            <h3>Aliases</h3>
+            <button type="button" class="btn btn--sm" id="add-alias">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add alias
+            </button>
+          </div>
+          <div id="alias-list" class="rows"></div>
+          <div class="rows-empty" id="alias-empty">No aliases â€” only the primary command name is registered.</div>
+        </div>
+      </form>
+
+      <!-- ===================== OUTPUT ===================== -->
+      <section class="panel out-panel" aria-label="Generated Lua code">
+        <div class="panel-head out-head">
+          <div class="segmented" role="tablist" aria-label="Framework">
+            <button type="button" role="tab" data-fw="native" aria-selected="true" class="is-active">Native</button>
+            <button type="button" role="tab" data-fw="qbcore" aria-selected="false">QBCore</button>
+            <button type="button" role="tab" data-fw="esx" aria-selected="false">ESX</button>
+          </div>
+          <div class="out-actions">
+            <button type="button" class="btn btn--sm" id="btn-copy" title="Copy code (Ctrl/Cmd+C)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy
+            </button>
+            <button type="button" class="btn btn--sm btn--primary" id="btn-download" title="Download .lua (Ctrl/Cmd+S)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              .lua
+            </button>
+          </div>
+        </div>
+        <div class="code-meta">
+          <span class="badge" id="fw-badge">RegisterCommand</span>
+          <span class="muted mono" id="file-name">heal.lua</span>
+          <span class="spacer"></span>
+          <span class="muted" id="line-count">0 lines</span>
+        </div>
+        <div class="code-scroll">
+          <pre class="code mono" id="code-out" tabindex="0" aria-live="polite"></pre>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="app-footer container">Part of the <a href="https://github.com/kasapdev/web-utility-suite">Web Utility Suite</a> Â· MIT Licensed</footer>
+
+  <!-- ===================== Shortcuts modal ===================== -->
+  <div class="modal-backdrop" id="help-modal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="help-title">
+      <div class="row between center" style="margin-bottom:var(--space-4)">
+        <h2 id="help-title" style="margin:0">Keyboard shortcuts</h2>
+        <button class="btn btn--icon btn--ghost" id="help-close" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <table class="shortcut-table">
+        <tbody>
+          <tr><td><kbd>Ctrl</kbd> / <kbd>âŒ˜</kbd> + <kbd>C</kbd></td><td>Copy generated code</td></tr>
+          <tr><td><kbd>Ctrl</kbd> / <kbd>âŒ˜</kbd> + <kbd>S</kbd></td><td>Download <code>.lua</code> file</td></tr>
+          <tr><td><kbd>Ctrl</kbd> / <kbd>âŒ˜</kbd> + <kbd>1/2/3</kbd></td><td>Switch framework tab</td></tr>
+          <tr><td><kbd>?</kbd></td><td>Open this help</td></tr>
+          <tr><td><kbd>Esc</kbd></td><td>Close dialog</td></tr>
+        </tbody>
+      </table>
+      <p class="muted" style="margin:var(--space-4) 0 0;font-size:13px">Tip: the code panel updates live as you type â€” no build step, runs straight from disk.</p>
+    </div>
+  </div>
+
+  <script src="assets/js/core.js"></script>
+  <script src="js/generators.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
