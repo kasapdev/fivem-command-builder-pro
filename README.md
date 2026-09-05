@@ -1,6 +1,6 @@
 # FiveM Command Builder Pro
 
-[![CI](https://github.com/kasapdev/fivem-command-builder-pro/actions/workflows/ci.yml/badge.svg)](https://github.com/kasapdev/fivem-command-builder-pro/actions/workflows/ci.yml)
+[![CI](https://github.com/kasapdev/fivem-command-builder-pro/actions/workflows/ci.yml/badge.svg)](https://github.com/kasapdev/fivem-command-builder-pro/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) ![Vanilla JS](https://img.shields.io/badge/Vanilla-JS-F7DF1E?logo=javascript&logoColor=black)
 Generate FiveM server commands as native, QBCore and ESX Lua — instantly.
 
 > A zero-dependency, offline-first builder that turns a simple form into clean, copy-pasteable Lua for three FiveM frameworks. Define a command once — name, description, arguments, ACE permissions, chat suggestions and aliases — and watch idiomatic code generate live as you type.
